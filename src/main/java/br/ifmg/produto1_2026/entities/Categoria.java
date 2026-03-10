@@ -1,25 +1,27 @@
 package br.ifmg.produto1_2026.entities;
 
+
 import jakarta.persistence.*;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.util.Objects;
 
 @Entity
 @Table(name = "tb_categoria")
 public class Categoria {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
 
-    public Categoria() {
-    }
+    public Categoria() {}
 
     public Categoria(Long id, String nome) {
         this.id = id;
         this.nome = nome;
+    }
+
+    public Categoria(long l, String notebook) {
+        this.nome = notebook;
     }
 
     public Long getId() {
@@ -41,8 +43,8 @@ public class Categoria {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Categoria that = (Categoria) o;
-        return Objects.equals(id, that.id);
+        Categoria categoria = (Categoria) o;
+        return Objects.equals(id, categoria.id);
     }
 
     @Override
@@ -52,7 +54,7 @@ public class Categoria {
 
     @Override
     public String toString() {
-        return "Categorias{" +
+        return "Categoria{" +
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 '}';
