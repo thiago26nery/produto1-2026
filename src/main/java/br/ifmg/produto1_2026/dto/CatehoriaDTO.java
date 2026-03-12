@@ -12,7 +12,6 @@ public class CategoriaDTO {
         this.nome = categoria.getNome();
     }
 
-
     public CategoriaDTO() {}
 
     public CategoriaDTO(long id, String nome) {
