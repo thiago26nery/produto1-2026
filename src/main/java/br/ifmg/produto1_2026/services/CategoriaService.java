@@ -34,17 +34,18 @@ public class CategoriaService {
              .collect(Collectors.toList());
     }
     @Transactional
-    public static CategoriaDTO insert(CategoriaDTO dto) {
+    public CategoriaDTO insert(CategoriaDTO dto) {
         Categoria entity = new Categoria();
         entity.setNome(dto.getNome());
 
-        Categoria nova = CategoriaRepository.save(entity);
+        Categoria nova = categoriaRepository.save(entity);
         return new CategoriaDTO(entity);
     }
 
-    public CategoriaDTO delete(Long id) {
-        if(!CategoriaRepository.existsById(id)){
-            throw new RegistroNaoEncontrado("Categoria não encontrada");
+    @Transactional
+    public void delete(Long id) {
+        if(!categoriaRepository.existsById(id)){
+            throw new ResourceNotFound("Categoria não encontrada");
         }
 
         try {
@@ -53,5 +54,19 @@ public class CategoriaService {
         catch(DataIntegrityViolationException e) {
             throw new ErroNoBancoDeDados(e.getMessage());
         }
+    }
+
+    public CategoriaDTO update(Long id, CategoriaDTO dto) {
+
+        if (!categoriaRepository.existsById(id)){
+            throw new ResourceNotFound("Categoria não encontrada");
+        }
+
+        Categoria entity = categoriaRepository.getReferenceById(id);
+
+        entity.setNome(dto.getNome()); // sobrescrevi o nome antigo
+        entity = categoriaRepository.save(entity);
+        return new CategoriaDTO(entity);
+
     }
 }

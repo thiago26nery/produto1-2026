@@ -1,5 +1,6 @@
 package br.ifmg.produto1_2026.resources.exceptions;
 
+import br.ifmg.produto1_2026.services.exceptions.ErroNoBancoDeDados;
 import br.ifmg.produto1_2026.services.exceptions.ResourceNotFound;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -12,11 +13,6 @@ import java.time.Instant;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
-    private final View error;
-
-    public ResourceExceptionHandler(View error) {
-        this.error = error;
-    }
 
     @ExceptionHandler(ResourceNotFound.class)
     public ResponseEntity<StandartError> entityNotFound(ResourceNotFound e,
@@ -31,5 +27,17 @@ public class ResourceExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 
+    }
+
+    public ResponseEntity<StandartError> databaseIntegrity(ErroNoBancoDeDados e, HttpServletRequest req) {
+
+        StandartError error = new StandartError();
+        error.setStatus(HttpStatus.BAD_REQUEST.value());
+        error.setMessage(e.getMessage());
+        error.setError("Registro não encontrado");
+        error.setTimestamp(Instant.now());
+        error.setPath(req.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
     }
 }
