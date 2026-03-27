@@ -23,7 +23,7 @@ public class ProdutoDTO {
 
     public ProdutoDTO(Produto produto) {
         this.id = produto.getId();
-        this.nome = produto.getName();
+        this.nome = produto.getNome();
         this.descricao = produto.getDescricao();
         this.preco = produto.getPreco();
         this.imgUrl = produto.getImgUrl();

@@ -3,13 +3,14 @@ package br.ifmg.produto1_2026.entities;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nome;
     private String descricao;
     private Double preco;
@@ -29,6 +30,13 @@ public class Produto {
         this.imgUrl = imgUrl;
         this.created_at = Instant.now();
     }
+    @ManyToMany
+    @JoinTable(
+            name = "tb_produto_categoria",
+            joinColums = @JoinColumn(name = "id_produto"),
+            inverseJoinColumns = @JoinColumn(name = "id_categoria")
+    )
+    private Set<Categoria> categorias = new HashSet<Categoria>();
 
     public Produto(){}
 
