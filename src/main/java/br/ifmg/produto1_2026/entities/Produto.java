@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
@@ -33,7 +34,7 @@ public class Produto {
     @ManyToMany
     @JoinTable(
             name = "tb_produto_categoria",
-            joinColums = @JoinColumn(name = "id_produto"),
+            joinColumns = @JoinColumn(name = "id_produto"),
             inverseJoinColumns = @JoinColumn(name = "id_categoria")
     )
     private Set<Categoria> categorias = new HashSet<Categoria>();
@@ -117,5 +118,8 @@ public class Produto {
     @Override
     public int hashCode() {
         return Objects.hash(id, nome, descricao, preco, imgUrl, updated_at, created_at);
+    }
+
+    public <E> List<E> getCategorias() {
     }
 }

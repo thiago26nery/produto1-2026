@@ -11,7 +11,9 @@ public class PerfilDTO {
         this.nome = perfil.getNome();
     }
 
-    public PerfilDTO() {}
+    public PerfilDTO() {
+
+    }
 
     public PerfilDTO(long id, String nome) {
         this.id = id;

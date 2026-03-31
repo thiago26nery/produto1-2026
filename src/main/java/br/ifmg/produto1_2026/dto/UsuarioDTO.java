@@ -15,6 +15,7 @@ public class UsuarioDTO {
     private String email;
     private String senha;
 
+    //usuario.getPerfiis().for
     public UsuarioDTO(Usuario usuario ) {
         this.id = usuario.getId();
         this.nome = usuario.getNome();

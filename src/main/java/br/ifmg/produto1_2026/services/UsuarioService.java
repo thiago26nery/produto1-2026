@@ -7,11 +7,13 @@ import br.ifmg.produto1_2026.services.exceptions.ErroNoBancoDeDados;
 import br.ifmg.produto1_2026.services.exceptions.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class UsuarioService {
 
     @Autowired
@@ -24,7 +26,7 @@ public class UsuarioService {
     }
 
     @Transactional(readOnly = true)
-    public List<UsuarioDTO> findAll() {
+    public List<UsuarioDTO> findAll(Pageable pageable) {
         return usuarioRepository.findAllByAtualidoEm()
                 .stream()
                 .map(UsuarioDTO::new)
@@ -32,16 +34,16 @@ public class UsuarioService {
     }
     @Transactional
     public UsuarioDTO insert(UsuarioDTO dto) {
-        Usuario entity = new Usuario();
-        entity.setNome(dto.getNome());
-        entity.setTelefone(dto.getTelefone());
-        entity.setEmail(dto.getEmail());
-        entity.setSenha(dto.getSenha());
-        entity.setCriadoEm(dto.getCriadoEm());
-        entity.setAtualidoEm(dto.getAtualidoEm());
+        Usuario usuario = new Usuario();
+        usuario.setNome(dto.getNome());
+        usuario.setTelefone(dto.getTelefone());
+        usuario.setEmail(dto.getEmail());
+        usuario.setSenha(dto.getSenha());
+        usuario.setCriadoEm(dto.getCriadoEm());
+        usuario.setAtualidoEm(dto.getAtualidoEm());
 
-        Usuario nova = usuarioRepository.save(entity);
-        return new UsuarioDTO(entity);
+        Usuario nova = usuarioRepository.save(usuario);
+        return new UsuarioDTO(usuario);
     }
 
     @Transactional
@@ -64,14 +66,14 @@ public class UsuarioService {
             throw new ResourceNotFound("Usuario não encontrada");
         }
 
-        Usuario entity = usuarioRepository.getReferenceById(Long id);
-        entity.setNome(dto.getNome()); // sobrescrevi o nome antigo
-        entity.setEmail(dto.getEmail());
-        entity.setSenha(dto.getSenha());
-        entity.setTelefone(dto.getTelefone());
-        entity.setCriadoEm(dto.getCriadoEm());
-        entity.setAtualidoEm(dto.getAtualidoEm());
-        entity = usuarioRepository.save(entity);
-        return new UsuarioDTO(entity);
+        Usuario usuario = usuarioRepository.getReferenceById(Long id);
+        usuario.setNome(dto.getNome()); // sobrescrevi o nome antigo
+        usuario.setEmail(dto.getEmail());
+        usuario.setSenha(dto.getSenha());
+        usuario.setTelefone(dto.getTelefone());
+        usuario.setCriadoEm(dto.getCriadoEm());
+        usuario.setAtualidoEm(dto.getAtualidoEm());
+        usuario = usuarioRepository.save(usuario);
+        return new UsuarioDTO(usuario);
 
     }
