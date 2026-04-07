@@ -4,13 +4,13 @@ import br.ifmg.produto1_2026.entities.Usuario;
 import org.springframework.stereotype.Component;
 
 //@Component
-public class NotificacaoEmail implements Notificador {
+public class NotificacaoSMS implements Notificador {
 
     private boolean caixaAlta;
     private String servidorSmpt;
 
 
-    public NotificacaoEmail(String servidorSmpt) {
+    public NotificacaoSMS(String servidorSmpt) {
         System.out.println("Notificacao email com sucesso");
         this.servidorSmpt = servidorSmpt;
 
@@ -21,7 +21,7 @@ public class NotificacaoEmail implements Notificador {
             mensagem = mensagem.toUpperCase();
         }
 
-            System.out.printf("Notificando %s através do email %s no servidor %s: %s\n",usuario.getNome(), usuario.getEmail(), servidorSmpt ,mensagem);
+        System.out.printf("Notificando %s através do telefone %s no servidor %s: \n",usuario.getNome(), usuario.getTelefone(), servidorSmpt ,mensagem);
 
     }
 
