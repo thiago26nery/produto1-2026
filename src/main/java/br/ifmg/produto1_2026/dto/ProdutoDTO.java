@@ -2,18 +2,25 @@ package br.ifmg.produto1_2026.dto;
 
 import br.ifmg.produto1_2026.entities.Categoria;
 import br.ifmg.produto1_2026.entities.Produto;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProdutoDTO {
 
+    @Schema(description = "identificador único no sistema")
     private Long id;
+    @Schema(description = "nome do produto")
     private String nome;
+    @Schema(description = "descrição detalhada do produto")
     private String descricao;
+    @Schema(description = "valor em reais do produto")
     private Double preco;
+    @Schema(description = "ebdereço eletronico da imagem")
     private String imgUrl;
 
+    @Schema(description = "lista das categorias que o produto pertence")
     private List<CategoriaDTO> categorias = new ArrayList<CategoriaDTO>();
 
     public ProdutoDTO(Long id, String nome, String descricao, Double preco, String imgUrl) {
