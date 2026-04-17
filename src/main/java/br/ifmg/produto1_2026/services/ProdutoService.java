@@ -6,13 +6,17 @@ import br.ifmg.produto1_2026.entities.Categoria;
 import br.ifmg.produto1_2026.entities.Produto;
 import br.ifmg.produto1_2026.repositories.CategoriaRepository;
 import br.ifmg.produto1_2026.repositories.ProdutoRepository;
+import br.ifmg.produto1_2026.resources.ProdutoResource;
 import br.ifmg.produto1_2026.services.exceptions.ErroNoBancoDeDados;
 import br.ifmg.produto1_2026.services.exceptions.ResourceNotFound;
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+//import static org.
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -26,10 +30,28 @@ public class ProdutoService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+
+    /*public Page<ProdutoDTO> findAll(Pageable pageRequest){
+        //lISTA COM OS DADOS DO BD
+        Page<Produto> produtos = repository.findAll(pageRequest);
+        return produtos.map(p -> new ProdutoDTO(p)
+                                                           .add(linkTo(methodOn(ProdutoResource.class).produtos(null)).withSelfRel())
+                                                           .add(linkTo(methodOn(ProdutoResource.class).produto(p.getId())..whitRel("Obter produto pelo ID"))
+    }*/
+
+
     @Transactional(readOnly = true)
     public ProdutoDTO findById(Long id) {
         return produtoRepository.findById(id).map(ProdutoDTO::new)
                 .orElseThrow(() -> new ResourceNotFound("Produto não encontrada"));
+
+        /*ProdutoDTO DTO = new ProdutoDTO(produto);
+        return dto
+                .add( linkTo( methodOn(ProdutoResource.class).produto(produto.getId()) ).withSelfRel("") )
+                .add( linkTo( methodOn(ProdutoResource.class).rpoduto(null) ).withSelfRel("Todos os produtos") )
+                .add( linkTo( methodOn(ProdutoResource.class).update(produto.getId(),dto) ).withSelfRel("Atualizar o produto") )
+                .add( linkTo( methodOn(ProdutoResource.class).delete(produto.getId() ).withSelfRel("Apagar o produto") )
+                ;*/
     }
 
     @Transactional(readOnly = true)
