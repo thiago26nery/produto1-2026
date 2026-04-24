@@ -6,11 +6,13 @@ import br.ifmg.produto1_2026.entities.Categoria;
 import br.ifmg.produto1_2026.repositories.CategoriaRepository;
 import br.ifmg.produto1_2026.services.exceptions.ErroNoBancoDeDados;
 import br.ifmg.produto1_2026.services.exceptions.ResourceNotFound;
+import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -22,20 +24,23 @@ public class CategoriaService {
     private CategoriaRepository categoriaRepository;
 
     @Transactional(readOnly = true)
-    public CategoriaDTO findById(Long id) {
-        return categoriaRepository.findById(id).map(CategoriaDTO::new)
-                .orElseThrow(() -> new ResourceNotFound("Categoria não encontrada"));
+    public Page<CategoriaDTO> findAll(Pageable pageRequest){
+        // lista com os dados do bd
+        Page<Categoria> categorias = categoriaRepository.findAll(pageRequest);
+
+        return categorias.map(CategoriaDTO::new);
     }
 
     @Transactional(readOnly = true)
-    public List<CategoriaDTO> findAll() {
-         return categoriaRepository.findAll()
-             .stream()
-             .map(CategoriaDTO::new)
-             .collect(Collectors.toList());
+    public CategoriaDTO findById(Long id) {
+        Optional<Categoria> opt = categoriaRepository.findById(id);
+        Categoria categoria = opt.orElseThrow(() -> new ResourceNotFound("Categoria não encontrada"));
+        return new CategoriaDTO(categoria);
     }
+
     @Transactional
     public CategoriaDTO insert(CategoriaDTO dto) {
+
         Categoria entity = new Categoria();
         entity.setNome(dto.getNome());
 
@@ -67,8 +72,6 @@ public class CategoriaService {
 
         entity.setNome(dto.getNome()); // sobrescrevi o nome antigo
         entity = categoriaRepository.save(entity);
-
-        for(UsuarioDTO userDto: dto.get)
 
         return new CategoriaDTO(entity);
 

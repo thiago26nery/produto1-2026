@@ -1,20 +1,11 @@
 package br.ifmg.produto1_2026.repositories;
 
+import br.ifmg.produto1_2026.entities.Produto;
 import br.ifmg.produto1_2026.entities.Usuario;
-import org.springframework.data.repository.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.nio.channels.FileChannel;
-import java.time.Instant;
-import java.util.Collection;
 
-interface UsuarioRepository extends Repository<Usuario, Long> {
-    FileChannel findById(Long id);
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
 
-    Collection<Object> findAllByAtualidoEm(Instant atualidoEm);
-
-    boolean existsById(Long id);
-
-    void deleteById(Long id);
-
-    Usuario getReferenceById(Long id);
 }

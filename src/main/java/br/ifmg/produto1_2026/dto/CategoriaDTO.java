@@ -8,15 +8,6 @@ public class CategoriaDTO {
 
     private long id;
     private String nome;
-    private Instant criadoEm;
-    private Instant atualizadoEm;
-
-    public CategoriaDTO(Categoria categoria) {
-        this.id = categoria.getId();
-        this.nome = categoria.getNome();
-        this.criadoEm = categoria.getCriadoEm();
-        this.atualizadoEm = categoria.getAtualizadoEm();
-    }
 
     public CategoriaDTO() {
 
@@ -26,6 +17,12 @@ public class CategoriaDTO {
         this.id = id;
         this.nome = nome;
     }
+
+    public CategoriaDTO(Categoria categoria) {
+        this.id = categoria.getId();
+        this.nome = categoria.getNome();
+    }
+
 
     public long getId() {
         return id;
@@ -43,19 +40,8 @@ public class CategoriaDTO {
         this.nome = nome;
     }
 
-    public Instant getCriadoEm() {
-        return criadoEm;
-    }
-
-    public void setCriadoEm(Instant criadoEm) {
-        this.criadoEm = criadoEm;
-    }
-
-    public Instant getAtualizadoEm() {
-        return atualizadoEm;
-    }
-
-    public void setAtualizadoEm(Instant atualizadoEm) {
-        this.atualizadoEm = atualizadoEm;
+    @Override
+    public String toString() {
+        return "CategoriaDTO{" + "id=" + id + ", nome=" + nome + '}';
     }
 }

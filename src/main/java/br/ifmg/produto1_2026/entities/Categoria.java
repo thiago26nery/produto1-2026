@@ -11,30 +11,25 @@ import java.util.Set;
 @Entity
 @Table(name = "tb_categoria")
 public class Categoria {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant criadoEm;
+    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant atualizadoEm;
 
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant criadoEm;
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant atualidoEm;
-
     @ManyToMany(mappedBy = "categorias")
-    private Set<Produto> categorias = new HashSet<Produto>();
+    private Set<Produto>  produtos = new HashSet<Produto>();
 
     public Categoria() {}
 
     public Categoria(Long id, String nome) {
         this.id = id;
         this.nome = nome;
-    }
-
-    public Categoria(long l, String notebook) {
-        this.nome = notebook;
     }
 
     public Long getId() {
@@ -57,16 +52,8 @@ public class Categoria {
         return criadoEm;
     }
 
-    public void setCriadoEm(Instant criadoEm) {
-        this.criadoEm = criadoEm;
-    }
-
     public Instant getAtualizadoEm() {
         return atualizadoEm;
-    }
-
-    public void setAtualizadoEm(Instant atualizadoEm) {
-        this.atualizadoEm = atualizadoEm;
     }
 
     @PrePersist

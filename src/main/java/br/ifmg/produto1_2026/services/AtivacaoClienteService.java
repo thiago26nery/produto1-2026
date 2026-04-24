@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 @Service
 public class AtivacaoClienteService {
 
-    @TipoDoNotificador(value = TipoDeNotificacao.EMAIL)
-    @Autowired
-    private Notificador notificador;
+    //@TipoDoNotificador(value = TipoDeNotificacao.EMAIL)
+    //@Autowired
+    //private Notificador notificador;
 
     /*public AtivacaoClienteService(Notificador notificador) {
         System.out.println("Iniciando AtivacaoClienteService");
@@ -29,27 +29,21 @@ public class AtivacaoClienteService {
 
     }*/
 
-    //@Autowired
-    public AtivacaoClienteService(Notificador notificador){
-        System.out.println("Iniciando AtivacaoClienteService");
-        this.notificador = notificador;
-    }
-
     public AtivacaoClienteService(){
         System.out.println("Iniciando AtivacaoClienteService com o construtor sem parâmetros");
     }
 
     public void ativar(Usuario usuario, String mensagem){
 
-        if(notificador != null)
-        notificador.notificar(usuario, mensagem);
+        //if(notificador != null)
+        //notificador.notificar(usuario, mensagem);
 
        /* for(Notificador notificador : notificadores){
 
         }*/
     }
 
-    /*@PostConstruct
+    @PostConstruct
     public void init(){
         System.out.println("Metodo executado depois do construtor");
     }
@@ -57,13 +51,18 @@ public class AtivacaoClienteService {
     @PreDestroy
     public void destroy(){
         System.out.println("Metodo executado ao destruir oo construtor");
-    }*/
+    }
 
+    /*
     public Notificador getNotificador() {
         return notificador;
     }
 
-    public void setNotificador(Notificador notificador){
+    //@Autowired  (forma 4) - indicamos a injenção do objeto no
+    //metodo set.
+    public void setNotificador(Notificador notificador) {
         this.notificador = notificador;
     }
+
+*/
 }

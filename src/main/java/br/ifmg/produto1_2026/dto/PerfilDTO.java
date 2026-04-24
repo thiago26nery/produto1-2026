@@ -6,11 +6,6 @@ public class PerfilDTO {
     private long id;
     private String nome;
 
-    public PerfilDTO(Perfil perfil) {
-        this.id = perfil.getId();
-        this.nome = perfil.getNome();
-    }
-
     public PerfilDTO() {
 
     }
@@ -18,6 +13,11 @@ public class PerfilDTO {
     public PerfilDTO(long id, String nome) {
         this.id = id;
         this.nome = nome;
+    }
+
+    public PerfilDTO(Perfil perfil) {
+        this.id = perfil.getId();
+        this.nome = perfil.getNome();
     }
 
     public long getId() {
@@ -34,5 +34,9 @@ public class PerfilDTO {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String toString(){
+        return "PerfilDTO{" + "id=" + id + ", nome=" + nome + '}';
     }
 }

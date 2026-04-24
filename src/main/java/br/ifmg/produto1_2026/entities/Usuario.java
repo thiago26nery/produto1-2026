@@ -8,8 +8,9 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name="tb_valores")
+@Table(name="tb_usuario")
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
@@ -22,7 +23,7 @@ public class Usuario {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant criadoEm;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant atualidoEm;
+    private Instant atualizadoEm;
 
     @ManyToMany
     @JoinTable(
@@ -30,10 +31,21 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "id_usuario"),
             inverseJoinColumns = @JoinColumn(name = "id_perfil")
     )
+
     private Set<Perfil> perfis = new HashSet<Perfil>();
 
     public Usuario(){
 
+    }
+
+    public Usuario(Long id,String nome, String telefone, String email, String senha, Instant criadoEm, Instant atualizadoEm) {
+        this.id = id;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+        this.senha = senha;
+        this.criadoEm = criadoEm;
+        this.atualizadoEm = atualizadoEm;
     }
 
     public Long getId() {
@@ -80,19 +92,9 @@ public class Usuario {
         return criadoEm;
     }
 
-    public void setCriadoEm(Instant criadoEm) {
-        this.criadoEm = criadoEm;
-    }
-
     public Instant getAtualidoEm() {
-        return atualidoEm;
+        return atualizadoEm;
     }
-
-    public void setAtualidoEm(Instant atualidoEm) {
-        this.atualidoEm = atualidoEm;
-    }
-
-
 
     public Set<Perfil> getPerfis() {
         return perfis;
@@ -109,19 +111,19 @@ public class Usuario {
 
     @PreUpdate
     public void preUpdate() {
-        this.atualidoEm = Instant.now();
+        this.atualizadoEm = Instant.now();
     }
 
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
-        return Objects.equals(id, usuario.id) && Objects.equals(nome, usuario.nome) && Objects.equals(telefone, usuario.telefone) && Objects.equals(email, usuario.email) && Objects.equals(senha, usuario.senha) && Objects.equals(criadoEm, usuario.criadoEm) && Objects.equals(atualidoEm, usuario.atualidoEm);
+        return Objects.equals(id, usuario.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, telefone, email, senha, criadoEm, atualidoEm);
+        return Objects.hash(id);
     }
 
     @Override
@@ -133,7 +135,7 @@ public class Usuario {
                 ", email='" + email + '\'' +
                 ", senha='" + senha + '\'' +
                 ", criadoEm=" + criadoEm +
-                ", atualidoEm=" + atualidoEm +
+                ", atualizadoEm=" + atualizadoEm +
                 '}';
     }
 }

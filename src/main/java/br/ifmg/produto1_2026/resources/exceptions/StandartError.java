@@ -27,6 +27,9 @@ public class StandartError extends RuntimeException {
         return message;
     }
 
+    public void setMessage(String message) { this.message = message;
+    }
+
     public Instant getTimestamp() {
         return timestamp;
     }
@@ -59,6 +62,4 @@ public class StandartError extends RuntimeException {
         this.path = path;
     }
 
-    public void setMessage(String message) {
-    }
 }

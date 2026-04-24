@@ -27,9 +27,9 @@ public class VendasResource {
         usuario.setNome("Fernando");
         usuario.setTelefone("+5555555555");
         usuario.setEmail("fernando@gmail.com");
-        atividacaoClienteService.notificar(usuario,"ativado...");
+        atividacaoClienteService.ativar(usuario,"ativado...");
 
-        return ResponseEntity.ok("OK");
+        return ResponseEntity.ok().body("Venda Realizada");
     }
 
 }

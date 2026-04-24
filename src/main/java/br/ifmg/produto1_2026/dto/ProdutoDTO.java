@@ -24,6 +24,10 @@ public class ProdutoDTO extends RepresentationModeConverter<ProdutoDTO> {
     @Schema(description = "lista das categorias que o produto pertence")
     private List<CategoriaDTO> categorias = new ArrayList<CategoriaDTO>();
 
+    public ProdutoDTO(){
+
+    }
+
     public ProdutoDTO(Long id, String nome, String descricao, Double preco, String imgUrl) {
         this.id = id;
         this.nome = nome;
@@ -32,19 +36,18 @@ public class ProdutoDTO extends RepresentationModeConverter<ProdutoDTO> {
         this.imgUrl = imgUrl;
     }
 
-    public ProdutoDTO(){
-
-    }
-
     public ProdutoDTO(Produto produto) {
         this.id = produto.getId();
         this.nome = produto.getNome();
         this.descricao = produto.getDescricao();
         this.preco = produto.getPreco();
         this.imgUrl = produto.getImgUrl();
+
+        entity
+                .getCategorias()
+                .forEach(cat->this.categorias.add(new CategoriaDTO(cat)))
     }
 
-    // entity.getCategorias().forEach(cat->this.categorias.add(new CategoriaDTO(cat)));
 
     public Long getId() {
         return id;
@@ -82,6 +85,9 @@ public class ProdutoDTO extends RepresentationModeConverter<ProdutoDTO> {
         return imgUrl;
     }
 
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
 
     public List<CategoriaDTO> getCategorias() {
         return categorias;
@@ -91,9 +97,6 @@ public class ProdutoDTO extends RepresentationModeConverter<ProdutoDTO> {
         this.categorias = categorias;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
-    }
 
     @Override
     public String toString() {

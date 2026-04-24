@@ -4,6 +4,8 @@ import br.ifmg.produto1_2026.entities.Usuario;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class UsuarioDTO {
@@ -15,15 +17,30 @@ public class UsuarioDTO {
     private String email;
     private String senha;
 
+    private List<PerfilDTO> perfis = new ArrayList<>();
+
+    public UsuarioDTO() {
+
+    }
+
     //usuario.getPerfiis().for
-    public UsuarioDTO(Usuario usuario ) {
+    public UsuarioDTO(Long id, String nome, String telefone, String email, String senha ) {
+        this.id = id;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+        this.senha = senha;
+    }
+
+    public UsuarioDTO(Usuario usuario) {
         this.id = usuario.getId();
         this.nome = usuario.getNome();
         this.telefone = usuario.getTelefone();
         this.email = usuario.getEmail();
         this.senha = usuario.getSenha();
-    }
 
+        usuario.getPerfis().forEach(role-> this.perfis.add(new PerfilDTO(role)));
+    }
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant criadoEm;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
@@ -69,19 +86,15 @@ public class UsuarioDTO {
         this.senha = senha;
     }
 
-    public Instant getCriadoEm() {
-        return criadoEm;
-    }
+   public List<PerfilDTO> getPerfis() {
+        return perfis;
+   }
 
-    public void setCriadoEm(Instant criadoEm) {
-        this.criadoEm = criadoEm;
-    }
+   public void setPerfis(List<PerfilDTO> perfis) {
+        this.perfis = perfis;
+   }
 
-    public Instant getAtualidoEm() {
-        return atualidoEm;
-    }
-
-    public void setAtualidoEm(Instant atualidoEm) {
-        this.atualidoEm = atualidoEm;
-    }
+   public String toString(){
+        return "Usuario{" + "id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", email=" + email + ", senha=" + senha + '}';
+   }
 }

@@ -8,29 +8,25 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+@Entity
+@Table(name = "tb_produto")
 public class Produto {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    @Column(columnDefinition = "TEXT")
     private String descricao;
     private Double preco;
     private String imgUrl;
 
 
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant updated_at;
+    private Instant criadoEm;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
-    private Instant created_at;
+    private Instant atualizadoEm;
 
-    public Produto(Long id, String nome, String descricao, Double preco, String imgUrl) {
-        this.id = id;
-        this.nome = nome;
-        this.descricao = descricao;
-        this.preco = preco;
-        this.imgUrl = imgUrl;
-        this.created_at = Instant.now();
-    }
     @ManyToMany
     @JoinTable(
             name = "tb_produto_categoria",
@@ -40,6 +36,16 @@ public class Produto {
     private Set<Categoria> categorias = new HashSet<Categoria>();
 
     public Produto(){}
+
+    public Produto(Long id, String nome, String descricao, Double preco, String imgUrl, Instant criadoEm, Instant atualizadoEm) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+        this.preco = preco;
+        this.imgUrl = imgUrl;
+        this.criadoEm = criadoEm;
+        this.atualizadoEm = atualizadoEm;
+    }
 
     public Long getId() {
         return id;
@@ -81,18 +87,42 @@ public class Produto {
         this.imgUrl = imgUrl;
     }
 
-    public Instant getUpdatedAt() { return updated_at; }
+    public Instant getCriadoEm() {
+        return criadoEm;
+    }
 
-    public Instant getCreatedAt() { return created_at; }
+    public Instant getAtualizadoEm() {
+        return atualizadoEm;
+    }
+
+    public Set<Categoria> getCategorias(){
+        return categorias;
+    }
+
+    public void setCategorias(Set<Categoria> categorias){
+        this.categorias = categorias;
+    }
 
     @PrePersist
-    public void prePersist() {
-        this.created_at = Instant.now();
+    public void prePersist(){
+        this.criadoEm = Instant.now();
     }
 
     @PreUpdate
-    public void preUpdate() {
-        this.updated_at = Instant.now();
+    public void preUpdate(){
+        this.atualizadoEm = Instant.now();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Produto produto = (Produto) o;
+        return Objects.equals(id, produto.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 
     @Override
@@ -103,23 +133,8 @@ public class Produto {
                 ", descricao='" + descricao + '\'' +
                 ", preco=" + preco +
                 ", imgUrl='" + imgUrl + '\'' +
-                ", updated_at=" + updated_at +
-                ", created_at=" + created_at +
+                ", criadoEm=" + criadoEm +
+                ", atualizadoEm=" + atualizadoEm +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Produto produto = (Produto) o;
-        return Objects.equals(id, produto.id) && Objects.equals(nome, produto.nome) && Objects.equals(descricao, produto.descricao) && Objects.equals(preco, produto.preco) && Objects.equals(imgUrl, produto.imgUrl) && Objects.equals(updated_at, produto.updated_at) && Objects.equals(created_at, produto.created_at);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, nome, descricao, preco, imgUrl, updated_at, created_at);
-    }
-
-    public <E> List<E> getCategorias() {
     }
 }

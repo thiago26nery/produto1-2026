@@ -28,13 +28,13 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
 
     }
-
+    @ExceptionHandler(ErroNoBancoDeDados.class)
     public ResponseEntity<StandartError> databaseIntegrity(ErroNoBancoDeDados e, HttpServletRequest req) {
 
         StandartError error = new StandartError();
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.setMessage(e.getMessage());
-        error.setError("Registro não encontrado");
+        error.setError("Erro na integridade do BD");
         error.setTimestamp(Instant.now());
         error.setPath(req.getRequestURI());
 

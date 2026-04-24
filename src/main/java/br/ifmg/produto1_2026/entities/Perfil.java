@@ -7,6 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "tb_perfil")
 public class Perfil{ //POJO
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,6 +15,11 @@ public class Perfil{ //POJO
 
     public Perfil(){
 
+    }
+
+    public Perfil(Long id, String nome){
+        this.id = id;
+        this.nome = nome;
     }
 
     public Long getId() {
@@ -41,7 +47,7 @@ public class Perfil{ //POJO
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id,nome);
     }
 
     @Override
