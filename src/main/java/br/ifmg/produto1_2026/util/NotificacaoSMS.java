@@ -7,12 +7,10 @@ import org.springframework.stereotype.Component;
 public class NotificacaoSMS implements Notificador {
 
     private boolean caixaAlta;
-    private String servidorSmpt;
 
 
     public NotificacaoSMS(String servidorSmpt) {
         System.out.println("Notificacao email com sucesso");
-        this.servidorSmpt = servidorSmpt;
 
     }
 
@@ -33,11 +31,4 @@ public class NotificacaoSMS implements Notificador {
         this.caixaAlta = caixaAlta;
     }
 
-    public String getServidorSmpt() {
-        return servidorSmpt;
-    }
-
-    public void setServidorSmpt(String servidorSmpt) {
-        this.servidorSmpt = servidorSmpt;
-    }
 }

@@ -26,6 +26,8 @@ import java.util.stream.Collectors;
 @Service
 public class ProdutoService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ProdutoService.class);
+
     @Autowired
     private ProdutoRepository produtoRepository;
 
@@ -35,8 +37,15 @@ public class ProdutoService {
 
     public Page<ProdutoDTO> findAll(Pageable pageRequest){
 
+        logger.info("Consultando a lista de produtos");
+        logger.error("Consultando a lista de produtos");
+        logger.warn("Consultando a lista de produtos");
+        logger.debug("Consultando {} a lista {} de produtos"
+                ,123,"teste");
+
         //lISTA COM OS DADOS DO BD
         Page<Produto> produtos = repository.findAll(pageRequest);
+
         Pageable pageable = PageRequest.of(0,10, Sort.by("id"));
 
         return produtos.map(p

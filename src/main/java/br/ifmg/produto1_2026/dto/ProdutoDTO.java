@@ -43,7 +43,7 @@ public class ProdutoDTO extends RepresentationModeConverter<ProdutoDTO> {
         this.preco = produto.getPreco();
         this.imgUrl = produto.getImgUrl();
 
-        entity
+        produto
                 .getCategorias()
                 .forEach(cat->this.categorias.add(new CategoriaDTO(cat)))
     }
