@@ -2,6 +2,8 @@ package br.ifmg.produto1_2026.dto;
 
 import br.ifmg.produto1_2026.entities.Usuario;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -12,9 +14,12 @@ public class UsuarioDTO {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
+    @NotBlank(message = "Campo nome obrigatório")
     private String nome;
     private String telefone;
     private String email;
+    @NotBlank(message = "Email obrigatório")
+    @Email(message = "email inválido")
     private String senha;
 
     private List<PerfilDTO> perfis = new ArrayList<>();

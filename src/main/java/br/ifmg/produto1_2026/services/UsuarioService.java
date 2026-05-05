@@ -11,11 +11,13 @@ import br.ifmg.produto1_2026.services.exceptions.ResourceNotFound;
 import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.querydsl.QPageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.awt.print.Pageable;
+import java.beans.Encoder;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,11 +31,14 @@ public class UsuarioService {
     @Autowired
     private PerfilRepository perfilRepository;
 
+    @Autowired
+    private Encoder encoder;
+
     @Transactional(readOnly = true)
     public Page<UsuarioDTO> findAll(Pageable pageable) {
         //Lista com os dados do BD.
         Page<Usuario> usuarios =
-                repository.findAll(PageRequest);
+                perfilRepository.findAll(PageRequest);
 
 
         return usuarios.map(UsuarioDTO::new);
@@ -45,10 +50,10 @@ public class UsuarioService {
         //buscamos no BD o usuario. O resultado é
         //um objeto do tipo Optional.
         Optional<Usuario> opt
-                = repository.findById(id);
+                = perfilRepository.findById(id);
         //buscamos o usuario dentro do objeto Optional
         Usuario usuario = opt.orElseThrow(
-                () -> new ResourceNotFound("Usuario não encontrado."));
+                () -> new ResourceNotFound("Usuario não encontrado.")) ;
         //Convertemos a entidade em DTO
         return new UsuarioDTO(usuario);
     }
@@ -58,21 +63,22 @@ public class UsuarioService {
 
         Usuario entity = new Usuario();
         copyDtoToEntity(dto, entity);
+        entity.setSenha(encoder.encode(dto.getSenha()));
 
 
-        Usuario novo = repository.save(entity);
+        Usuario novo = perfilRepository.save(entity);
         return new UsuarioDTO(novo);
     }
 
     @Transactional
     public void delete(Long id) {
 
-        if (!repository.existsById(id)) {
+        if (!perfilRepository.existsById(id)) {
             throw new ResourceNotFound("Usuario não encontrado, ao ser excluído.");
         }
 
         try {
-            repository.deleteById(id);
+            perfilRepository.deleteById(id);
         }
         catch (DataIntegrityViolationException e) {
             throw new ErroNoBancoDeDados(e.getMessage());
@@ -82,16 +88,16 @@ public class UsuarioService {
 
     public UsuarioDTO update(Long id, UsuarioDTO dto) {
 
-        if (!repository.existsById(id)) {
+        if (!perfilRepository.existsById(id)) {
             throw new ResourceNotFound("Usuario não encontrado, para ser alterado.");
         }
 
         Usuario entity =
-                repository.getReferenceById(id);
+                perfilRepository.getReferenceById(id);
 
         copyDtoToEntity(dto, entity);
 
-        entity = repository.save(entity);
+        entity = perfilRepository.save(entity);
         return new UsuarioDTO(entity);
     }
 

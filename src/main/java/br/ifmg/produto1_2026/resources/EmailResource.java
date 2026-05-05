@@ -16,13 +16,14 @@ import javax.swing.text.html.parser.Entity;
 @RestController
 @RequestMapping("/email")
 public class EmailResource {
+
     @Autowired
     private EmailService emailService;
 
     @PostMapping
-    public ResponseEntity<Void> sendEmail(@Valid @RequestBody Email email){
+    public ResponseEntity<Void> sendEmail(@Valid @RequestBody EmailDto emailDto){
 
-        emailService.sendMail(EmailDto);
-        return ResponseEntity.ok().build();
+        emailService.sendEmail(emailDto);
+        return ResponseEntity.noContent().build();
     }
 }

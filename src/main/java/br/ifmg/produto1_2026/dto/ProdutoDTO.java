@@ -3,6 +3,8 @@ package br.ifmg.produto1_2026.dto;
 import br.ifmg.produto1_2026.entities.Categoria;
 import br.ifmg.produto1_2026.entities.Produto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import org.hibernate.boot.jaxb.hbm.internal.RepresentationModeConverter;
 
 import java.util.ArrayList;
@@ -13,10 +15,12 @@ public class ProdutoDTO extends RepresentationModeConverter<ProdutoDTO> {
     @Schema(description = "identificador único no sistema")
     private Long id;
     @Schema(description = "nome do produto")
+    @Size(min = 1, max = 100, message = "O produto deve ")
     private String nome;
     @Schema(description = "descrição detalhada do produto")
     private String descricao;
     @Schema(description = "valor em reais do produto")
+    @Positive(message = "O preço deve ser positivo")
     private Double preco;
     @Schema(description = "ebdereço eletronico da imagem")
     private String imgUrl;
