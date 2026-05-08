@@ -1,6 +1,6 @@
 package br.ifmg.produto1_2026.services;
 
-import br.ifmg.produto1_2026.dto.EmailDto;
+import br.ifmg.produto1_2026.dto.EmailDTO;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +21,7 @@ public class EmailService {
     private String senha;
 
 
-    public void sendMail(@Valid EmailDto emailDTO) {
+    public void sendMail(@Valid EmailDTO emailDTO) {
 
 
         try {

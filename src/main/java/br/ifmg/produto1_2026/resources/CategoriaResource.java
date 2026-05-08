@@ -5,6 +5,7 @@ import br.ifmg.produto1_2026.entities.Categoria;
 import br.ifmg.produto1_2026.services.CategoriaService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;

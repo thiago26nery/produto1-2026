@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
-public class EmailDto {
+public class EmailDTO {
 
     @Email // valida o dto
     @NotBlank // se é nulo ou nenhum caratere
@@ -19,13 +19,13 @@ public class EmailDto {
     @Schema(description = "corpo do email")
     private String body;
 
-    public EmailDto(String to, String subject, String body) {
+    public EmailDTO(String to, String subject, String body) {
         this.to = to;
         this.subject = subject;
         this.body = body;
     }
 
-    public EmailDto() {
+    public EmailDTO() {
     }
 
     public String getTo() {

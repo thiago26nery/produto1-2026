@@ -10,6 +10,7 @@ import br.ifmg.produto1_2026.resources.ProdutoResource;
 import br.ifmg.produto1_2026.services.exceptions.ErroNoBancoDeDados;
 import br.ifmg.produto1_2026.services.exceptions.ResourceNotFound;
 import org.hibernate.query.Page;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,7 +36,7 @@ public class ProdutoService {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
-
+    @Transactional(readOnly = true)
     public Page<ProdutoDTO> findAll(Pageable pageRequest){
 
         logger.info("Consultando a lista de produtos");
@@ -44,7 +46,7 @@ public class ProdutoService {
                 ,123,"teste");
 
         //lISTA COM OS DADOS DO BD
-        Page<Produto> produtos = repository.findAll(pageRequest);
+        Page<Produto> produtos = produtoRepository.findAll(pageRequest);
 
         Pageable pageable = PageRequest.of(0,10, Sort.by("id"));
 
