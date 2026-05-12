@@ -1,23 +1,23 @@
 package br.ifmg.produto1_2026.entities;
 
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Objects;
 
 @Entity
-@Table(name = "tb_perfil")
-public class Perfil{ //POJO
+@Table(name="tb_perfil")
+public class Perfil implements GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
     private String nome;
 
-    public Perfil(){
-
+    public Perfil() {
     }
 
-    public Perfil(Long id, String nome){
+    public Perfil(Long id, String nome) {
         this.id = id;
         this.nome = nome;
     }
@@ -41,13 +41,13 @@ public class Perfil{ //POJO
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        Perfil perfil = (Perfil)  o;
-        return Objects.equals(id, perfil.id);
+        Perfil perfil = (Perfil) o;
+        return Objects.equals(id, perfil.id) && Objects.equals(nome, perfil.nome);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id,nome);
+        return Objects.hash(id, nome);
     }
 
     @Override
@@ -56,5 +56,10 @@ public class Perfil{ //POJO
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 '}';
+    }
+
+    @Override
+    public String getAuthority() {
+        return nome;
     }
 }

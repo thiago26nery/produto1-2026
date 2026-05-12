@@ -1,35 +1,39 @@
 package br.ifmg.produto1_2026.dto;
 
-import br.ifmg.produto1_2026.entities.Categoria;
 import br.ifmg.produto1_2026.entities.Produto;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import org.hibernate.boot.jaxb.hbm.internal.RepresentationModeConverter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProdutoDTO extends RepresentationModeConverter<ProdutoDTO> {
+public class ProdutoDTO extends RepresentationModel<ProdutoDTO> {
 
     @Schema(description = "identificador único no sistema")
     private Long id;
     @Schema(description = "nome do produto")
-    @Size(min = 1, max = 100, message = "O produto deve ")
+    @Size(min = 2, max = 100 , message = "O nome do produto deve ter entre 2 e 100 caractres")
     private String nome;
-    @Schema(description = "descrição detalhada do produto")
+    @Schema(description = "descricao detalhada do produto")
     private String descricao;
     @Schema(description = "valor em reais do produto")
-    @Positive(message = "O preço deve ser positivo")
+    @Positive(message = "O preço do produto deve ser positivo")
     private Double preco;
-    @Schema(description = "ebdereço eletronico da imagem")
+    @NotNull
+    @Schema(description = "endereço eletrônico da imagem")
     private String imgUrl;
 
-    @Schema(description = "lista das categorias que o produto pertence")
-    private List<CategoriaDTO> categorias = new ArrayList<CategoriaDTO>();
+    @Schema(description = "lista das categorias que o produto pertence.")
+    private List<CategoriaDTO> categorias
+            = new ArrayList<CategoriaDTO>();
 
-    public ProdutoDTO(){
 
+    public ProdutoDTO() {
     }
 
     public ProdutoDTO(Long id, String nome, String descricao, Double preco, String imgUrl) {
@@ -40,18 +44,23 @@ public class ProdutoDTO extends RepresentationModeConverter<ProdutoDTO> {
         this.imgUrl = imgUrl;
     }
 
-    public ProdutoDTO(Produto produto) {
-        this.id = produto.getId();
-        this.nome = produto.getNome();
-        this.descricao = produto.getDescricao();
-        this.preco = produto.getPreco();
-        this.imgUrl = produto.getImgUrl();
+    public ProdutoDTO(Produto entity) {
+        this.id = entity.getId();
+        this.nome = entity.getNome();
+        this.descricao = entity.getDescricao();
+        this.preco = entity.getPreco();
+        this.imgUrl = entity.getImgUrl();
 
-        produto
+        entity
                 .getCategorias()
-                .forEach(cat->this.categorias.add(new CategoriaDTO(cat)))
-    }
+                .forEach(
+                        cat->
+                                this.categorias.add(
+                                        new CategoriaDTO(cat)
+                                )
+                );
 
+    }
 
     public Long getId() {
         return id;
@@ -101,14 +110,13 @@ public class ProdutoDTO extends RepresentationModeConverter<ProdutoDTO> {
         this.categorias = categorias;
     }
 
-
     @Override
     public String toString() {
         return "ProdutoDTO{" +
                 "id=" + id +
-                ", name='" + nome + '\'' +
-                ", description='" + descricao + '\'' +
-                ", price=" + preco +
+                ", nome='" + nome + '\'' +
+                ", descricao='" + descricao + '\'' +
+                ", preco=" + preco +
                 ", imgUrl='" + imgUrl + '\'' +
                 '}';
     }

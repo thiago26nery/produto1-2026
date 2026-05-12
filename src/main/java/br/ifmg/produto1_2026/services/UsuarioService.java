@@ -1,44 +1,48 @@
-package br.ifmg.produto1_2026.services;
+package br.ifmg.produto1_2026.service;
+
 
 import br.ifmg.produto1_2026.dto.PerfilDTO;
 import br.ifmg.produto1_2026.dto.UsuarioDTO;
+import br.ifmg.produto1_2026.dto.UsuarioInsertDTO;
 import br.ifmg.produto1_2026.entities.Perfil;
 import br.ifmg.produto1_2026.entities.Usuario;
+import br.ifmg.produto1_2026.projections.UserDetailsProjection;
 import br.ifmg.produto1_2026.repositories.PerfilRepository;
 import br.ifmg.produto1_2026.repositories.UsuarioRepository;
-import br.ifmg.produto1_2026.services.exceptions.ErroNoBancoDeDados;
+import br.ifmg.produto1_2026.services.exception.ErroNoBancoDeDados;
+import br.ifmg.produto1_2026.service.exception.RegistroNaoEncontrado;
 import br.ifmg.produto1_2026.services.exceptions.ResourceNotFound;
-import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.querydsl.QPageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
-import java.beans.Encoder;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
-public class UsuarioService {
+public class UsuarioService implements UserDetailsService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
-
+    private UsuarioRepository repository;
     @Autowired
     private PerfilRepository perfilRepository;
 
     @Autowired
-    private Encoder encoder;
+    private PasswordEncoder encoder;
 
     @Transactional(readOnly = true)
-    public Page<UsuarioDTO> findAll(Pageable pageable) {
+    public Page<UsuarioDTO> findAll(Pageable pageRequest) {
+
         //Lista com os dados do BD.
         Page<Usuario> usuarios =
-                perfilRepository.findAll(PageRequest);
+                repository.findAll(pageRequest);
 
 
         return usuarios.map(UsuarioDTO::new);
@@ -50,35 +54,36 @@ public class UsuarioService {
         //buscamos no BD o usuario. O resultado é
         //um objeto do tipo Optional.
         Optional<Usuario> opt
-                = perfilRepository.findById(id);
+                = repository.findById(id);
         //buscamos o usuario dentro do objeto Optional
         Usuario usuario = opt.orElseThrow(
-                () -> new ResourceNotFound("Usuario não encontrado.")) ;
+                () -> new ResourceNotFound("Usuario não encontrado."));
         //Convertemos a entidade em DTO
         return new UsuarioDTO(usuario);
     }
 
     @Transactional
-    public UsuarioDTO insert(UsuarioDTO dto) {
+    public UsuarioDTO insert(UsuarioInsertDTO dto) {
 
         Usuario entity = new Usuario();
         copyDtoToEntity(dto, entity);
-        entity.setSenha(encoder.encode(dto.getSenha()));
+        entity.setSenha(
+                encoder.encode(dto.getSenha())
+        );
 
-
-        Usuario novo = perfilRepository.save(entity);
+        Usuario novo = repository.save(entity);
         return new UsuarioDTO(novo);
     }
 
     @Transactional
     public void delete(Long id) {
 
-        if (!perfilRepository.existsById(id)) {
+        if (!repository.existsById(id)) {
             throw new ResourceNotFound("Usuario não encontrado, ao ser excluído.");
         }
 
         try {
-            perfilRepository.deleteById(id);
+            repository.deleteById(id);
         }
         catch (DataIntegrityViolationException e) {
             throw new ErroNoBancoDeDados(e.getMessage());
@@ -88,16 +93,16 @@ public class UsuarioService {
 
     public UsuarioDTO update(Long id, UsuarioDTO dto) {
 
-        if (!perfilRepository.existsById(id)) {
-            throw new ResourceNotFound("Usuario não encontrado, para ser alterado.");
+        if (!repository.existsById(id)) {
+            throw new RegistroNaoEncontrado("Usuario não encontrado, para ser alterado.");
         }
 
         Usuario entity =
-                perfilRepository.getReferenceById(id);
+                repository.getReferenceById(id);
 
         copyDtoToEntity(dto, entity);
 
-        entity = perfilRepository.save(entity);
+        entity = repository.save(entity);
         return new UsuarioDTO(entity);
     }
 
@@ -105,7 +110,6 @@ public class UsuarioService {
     private void copyDtoToEntity(UsuarioDTO dto, Usuario entity) {
         entity.setNome(dto.getNome());
         entity.setEmail(dto.getEmail());
-        entity.setSenha(dto.getSenha());
         entity.setTelefone(dto.getTelefone());
 
         entity.getPerfis().clear();
@@ -118,6 +122,19 @@ public class UsuarioService {
         }
     }
 
+    // 18 - avançando com o spring security
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
+        List<UserDetailsProjection> dados =
+                repository.loadUserByUsername(username);
 
+        if (dados.isEmpty()) {
+            throw new UsernameNotFoundException(username);
+        }
+
+        Usuario usuario = new Usuario();
+
+        return usuario;
+    }
 }

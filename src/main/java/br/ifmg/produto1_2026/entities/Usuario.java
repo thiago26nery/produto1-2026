@@ -1,44 +1,44 @@
 package br.ifmg.produto1_2026.entities;
 
+
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
-@Table(name="tb_usuario")
-public class Usuario {
+@Table(name = "tb_usuario")
+public class Usuario implements UserDetails {
 
     @Id
-    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String telefone;
     private String email;
     private String senha;
 
-
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant criadoEm;
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant atualizadoEm;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "tb_usuario_perfil",
+            name="tb_usuario_perfil",
             joinColumns = @JoinColumn(name = "id_usuario"),
             inverseJoinColumns = @JoinColumn(name = "id_perfil")
     )
-
     private Set<Perfil> perfis = new HashSet<Perfil>();
 
     public Usuario(){
 
     }
 
-    public Usuario(Long id,String nome, String telefone, String email, String senha, Instant criadoEm, Instant atualizadoEm) {
+
+    public Usuario(Long id, String nome, String telefone, String email, String senha, Instant criadoEm, Instant atualizadoEm) {
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
@@ -92,7 +92,8 @@ public class Usuario {
         return criadoEm;
     }
 
-    public Instant getAtualidoEm() {
+
+    public Instant getAtualizadoEm() {
         return atualizadoEm;
     }
 
@@ -104,6 +105,15 @@ public class Usuario {
         this.perfis = perfis;
     }
 
+    public void addRole(Perfil perfil){
+        this.perfis.add(perfil);
+    }
+
+    public boolean hasRole(Perfil perfil){
+        return this.perfis.contains(perfil);
+    }
+
+
     @PrePersist
     public void prePersist() {
         this.criadoEm = Instant.now();
@@ -114,6 +124,7 @@ public class Usuario {
         this.atualizadoEm = Instant.now();
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
@@ -123,7 +134,7 @@ public class Usuario {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hashCode(id);
     }
 
     @Override
@@ -137,5 +148,20 @@ public class Usuario {
                 ", criadoEm=" + criadoEm +
                 ", atualizadoEm=" + atualizadoEm +
                 '}';
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return perfis;
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
     }
 }

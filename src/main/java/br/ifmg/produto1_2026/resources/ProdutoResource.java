@@ -1,39 +1,45 @@
 package br.ifmg.produto1_2026.resources;
 
+import br.ifmg.produto1_2026.dto.CategoriaDTO;
 import br.ifmg.produto1_2026.dto.ProdutoDTO;
+import br.ifmg.produto1_2026.service.CategoriaService;
+import br.ifmg.produto1_2026.service.ProdutoService;
 import br.ifmg.produto1_2026.services.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.hibernate.query.Page;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.awt.print.Pageable;
 import java.net.URI;
 
 @RestController
 @RequestMapping("/produto")
-@Tag(name="produtos",description = "Essa API é responsável por gerenciar produtos na plataforma.")
+@Tag(name="Produtos", description = "Essa API é responsável por gerenciar produtos na plataforma.")
 public class ProdutoResource {
 
     @Autowired
-    private ProdutoService produtoService;
+    private br.ifmg.produto1_2026.services.ProdutoService produtoService;
+
 
     @GetMapping(produces = "application/json")
     @Operation(
-            description = "A plataforma precisa disponibilizar um cadastro e produtos...",
-            summary = "Endpoint para inserir um produto" ,
+            summary = "Endpoint retornar todos os produto",
+            description = "A plataforma precisa disponibilibiar uma listagem de produtos....",
             responses = {
                     @ApiResponse(description = "Lista retornada com sucesso", responseCode = "200"),
                     @ApiResponse(description = "Erro interno", responseCode = "500"),
-
             }
     )
     public ResponseEntity<Page<ProdutoDTO>> produtos(Pageable pageable){
-        Page<ProdutoDTO> produtos = produtoService.findAll(pageable);
+
+        Page<ProdutoDTO> produtos =
+                produtoService.findAll(pageable);
         return ResponseEntity.ok().body(produtos);
     };
 
@@ -46,7 +52,6 @@ public class ProdutoResource {
                     @ApiResponse(description = "Infomação não encontrada.", responseCode = "404"),
             }
     )
-
     public ResponseEntity<ProdutoDTO> produto(@PathVariable Long id){
         ProdutoDTO dto= produtoService.findById(id);
         return ResponseEntity.ok().body(dto);
@@ -66,7 +71,7 @@ public class ProdutoResource {
             }
     )
     public ResponseEntity<ProdutoDTO> insert(
-            @RequestBody ProdutoDTO dto){
+            @RequestBody @Valid ProdutoDTO dto){
         //inserindo no BD e pegando o objeto inserido.
         ProdutoDTO retorno
                 = produtoService.insert(dto);
@@ -121,7 +126,7 @@ public class ProdutoResource {
     )
     public ResponseEntity<ProdutoDTO> update(
             @PathVariable Long id,
-            @RequestBody ProdutoDTO dto){
+            @RequestBody  @Valid  ProdutoDTO dto){
 
         ProdutoDTO retorno =  produtoService.update(id,dto);
 
@@ -129,4 +134,11 @@ public class ProdutoResource {
     }
 
 
+
 }
+
+
+
+
+
+
