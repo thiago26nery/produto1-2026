@@ -94,7 +94,7 @@ public class UsuarioService implements UserDetailsService {
     public UsuarioDTO update(Long id, UsuarioDTO dto) {
 
         if (!repository.existsById(id)) {
-            throw new RegistroNaoEncontrado("Usuario não encontrado, para ser alterado.");
+            throw new ResourceNotFound("Usuario não encontrado, para ser alterado.");
         }
 
         Usuario entity =

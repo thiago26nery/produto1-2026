@@ -220,7 +220,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"nome\": \"Bicicleta Caloi\",\r\n    \"descricao\": \"Essa é uma Bicicleta muito boa\",\r\n    \"preco\": 1000.60,\r\n    \"imgUrl\": \"https:\\\\shopee.com\\fotoDaBiclicleta\",\r\n    \"categorias\": [\r\n               {\"id\": 4 },\r\n               {\"id\": 1 }\r\n                  ]\r\n}",
+              "raw": "{\r\n    \"nome\": \"\",\r\n    \"descricao\": \"Essa é uma Bicicleta muito boa\",\r\n    \"preco\": -1000.60,\r\n    \"imgUrl\": \"https:\\\\shopee.com\\fotoDaBiclicleta\",\r\n    \"categorias\": [\r\n               {\"id\": 4 },\r\n               {\"id\": 1 }\r\n                  ]\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -375,6 +375,33 @@
           "response": []
         },
         {
+          "name": "Send mail",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"to\": \"bruno.ferreira@ifmg.edu.br\",\r\n    \"subject\": \"Teste de email\",\r\n    \"body\": \"Esse é um email de teste\"\r\n    \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://{{host}}/email",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "email"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
           "name": "Update",
           "request": {
             "method": "PUT",
@@ -397,6 +424,65 @@
               "path": [
                 "usuario",
                 "2"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "seguranca",
+      "item": [
+        {
+          "name": "oauth2",
+          "request": {
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "password",
+                  "value": "myclientsecret",
+                  "type": "string"
+                },
+                {
+                  "key": "username",
+                  "value": "myclientid",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "username",
+                  "value": "bruno.ferreira@ifmg.edu.br",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text"
+                },
+                {
+                  "key": "grant_type",
+                  "value": "password",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://{{host}}/oauth2/token",
+              "protocol": "http",
+              "host": [
+                "{{host}}"
+              ],
+              "path": [
+                "oauth2",
+                "token"
               ]
             }
           },

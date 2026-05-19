@@ -1,6 +1,7 @@
 package br.ifmg.produto1_2026.util;
 
 import br.ifmg.produto1_2026.entities.Usuario;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 //@Component
@@ -11,19 +12,20 @@ public class NotificacaoEmail implements Notificador {
 
 
     public NotificacaoEmail(String servidorSmpt) {
-        System.out.println("Notificacao email com sucesso");
+        System.out.println("NotificacaoEmail criado com sucesso!");
         this.servidorSmpt = servidorSmpt;
-
     }
 
     public void notificar(Usuario usuario, String mensagem) {
+
         if (caixaAlta) {
             mensagem = mensagem.toUpperCase();
         }
 
-            System.out.printf("Notificando %s através do email %s no servidor %s: %s\n",usuario.getNome(), usuario.getEmail(), servidorSmpt ,mensagem);
-
+        System.out.printf("Notifificando %s através do email %s no servidor %s: %s\n",
+                usuario.getNome(), usuario.getEmail(), servidorSmpt, mensagem);
     }
+
 
     public boolean isCaixaAlta() {
         return caixaAlta;
