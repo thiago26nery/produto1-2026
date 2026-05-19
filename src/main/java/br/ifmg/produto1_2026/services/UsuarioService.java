@@ -1,4 +1,4 @@
-package br.ifmg.produto1_2026.service;
+package br.ifmg.produto1_2026.services;
 
 
 import br.ifmg.produto1_2026.dto.PerfilDTO;
@@ -9,8 +9,7 @@ import br.ifmg.produto1_2026.entities.Usuario;
 import br.ifmg.produto1_2026.projections.UserDetailsProjection;
 import br.ifmg.produto1_2026.repositories.PerfilRepository;
 import br.ifmg.produto1_2026.repositories.UsuarioRepository;
-import br.ifmg.produto1_2026.services.exception.ErroNoBancoDeDados;
-import br.ifmg.produto1_2026.service.exception.RegistroNaoEncontrado;
+import br.ifmg.produto1_2026.services.exceptions.ErroNoBancoDeDados;
 import br.ifmg.produto1_2026.services.exceptions.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;

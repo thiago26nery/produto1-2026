@@ -1,10 +1,5 @@
 package br.ifmg.produto1_2026.dto;
 
-import br.ifmg.produto1_2026.entities.Usuario;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class UsuarioInsertDTO extends UsuarioDTO {
 
     private String senha;

@@ -1,7 +1,9 @@
 package br.ifmg.produto1_2026.resources.exceptions;
 
+import br.ifmg.produto1_2026.resources.exceptions.FieldMessage;
 import br.ifmg.produto1_2026.services.exceptions.ErroNoBancoDeDados;
 import br.ifmg.produto1_2026.services.exceptions.ResourceNotFound;
+import br.ifmg.produto1_2026.resources.exceptions.ValidationError;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,7 +11,6 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-
 import javax.swing.text.View;
 import java.time.Instant;
 
@@ -60,7 +61,7 @@ public class ResourceExceptionHandler {
                 e.getBindingResult().getFieldErrors()){
 
             error.addFieldMessage(
-                    new FieldMessage(field.getField(),
+                    new br.ifmg.produto1_2026.resources.exceptions.FieldMessage(field.getField(),
                             field.getDefaultMessage())
             );
         }

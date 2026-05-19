@@ -1,4 +1,4 @@
-package br.ifmg.produto1_2026.resources.exception;
+package br.ifmg.produto1_2026.resources.exceptions;
 
 public class FieldMessage {
 

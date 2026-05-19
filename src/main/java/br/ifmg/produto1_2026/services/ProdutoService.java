@@ -9,21 +9,19 @@ import br.ifmg.produto1_2026.repositories.ProdutoRepository;
 import br.ifmg.produto1_2026.resources.ProdutoResource;
 import br.ifmg.produto1_2026.services.exceptions.ErroNoBancoDeDados;
 import br.ifmg.produto1_2026.services.exceptions.ResourceNotFound;
-import org.hibernate.query.Page;
+
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-//import static org.
 
-import java.awt.print.Pageable;
-import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {
@@ -63,7 +61,7 @@ public class ProdutoService {
         //buscamos no BD o produto. O resultado é
         //um objeto do tipo Optional.
         Optional<Produto> opt
-                = repository.findById(id);
+                = produtoRepository.findById(id);
         //buscamos o produto dentro do objeto Optional
         Produto produto = opt.orElseThrow(
                 () -> new ResourceNotFound("Produto não encontrado."));
@@ -89,7 +87,7 @@ public class ProdutoService {
 
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
 
-        Produto novo = repository.save(entity);
+        Produto novo = produtoRepository.save(entity);
         return new ProdutoDTO(novo)
                 .add( linkTo( methodOn(ProdutoResource.class).insert(dto) ).withSelfRel() )
                 .add( linkTo( methodOn(ProdutoResource.class).produto(novo.getId()) ).withRel("Busca pelo ID") )
@@ -102,12 +100,12 @@ public class ProdutoService {
     @Transactional
     public void delete(Long id) {
 
-        if (!repository.existsById(id)) {
+        if (!produtoRepository.existsById(id)) {
             throw new ResourceNotFound("Produto não encontrado, ao ser excluído.");
         }
 
         try {
-            repository.deleteById(id);
+            produtoRepository.deleteById(id);
         }
         catch (DataIntegrityViolationException e) {
             throw new ErroNoBancoDeDados(e.getMessage());
@@ -117,18 +115,18 @@ public class ProdutoService {
 
     public ProdutoDTO update(Long id, ProdutoDTO dto) {
 
-        if (!repository.existsById(id)) {
+        if (!produtoRepository.existsById(id)) {
             throw new ResourceNotFound("Produto não encontrado, para ser alterado.");
         }
 
         Produto entity =
-                repository.getReferenceById(id);
+                produtoRepository.getReferenceById(id);
 
         coptDtoToEntity(dto, entity);
 //14 - implementando hateos
         Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
 
-        entity = repository.save(entity);
+        entity = produtoRepository.save(entity);
         return new ProdutoDTO(entity)
                 .add( linkTo( methodOn(ProdutoResource.class).update(id, dto) ).withSelfRel() )
                 .add( linkTo( methodOn(ProdutoResource.class).produto( id ) ).withRel("Busca pelo ID") )

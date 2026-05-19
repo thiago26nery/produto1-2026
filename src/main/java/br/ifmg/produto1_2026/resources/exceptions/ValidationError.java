@@ -1,4 +1,4 @@
-package br.ifmg.produto1_2026.resources.exception;
+package br.ifmg.produto1_2026.resources.exceptions;
 
 import br.ifmg.produto1_2026.resources.exceptions.FieldMessage;
 import br.ifmg.produto1_2026.resources.exceptions.StandartError;

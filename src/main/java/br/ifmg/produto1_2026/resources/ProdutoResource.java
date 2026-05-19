@@ -1,10 +1,8 @@
 package br.ifmg.produto1_2026.resources;
 
-import br.ifmg.produto1_2026.dto.CategoriaDTO;
+
 import br.ifmg.produto1_2026.dto.ProdutoDTO;
-import br.ifmg.produto1_2026.service.CategoriaService;
-import br.ifmg.produto1_2026.service.ProdutoService;
-import br.ifmg.produto1_2026.services.ProdutoService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
