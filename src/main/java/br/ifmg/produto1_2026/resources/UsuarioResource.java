@@ -1,10 +1,13 @@
 package br.ifmg.produto1_2026.resources;
 
 import br.ifmg.produto1_2026.dto.UsuarioDTO;
+import br.ifmg.produto1_2026.dto.UsuarioInsertDTO;
 import br.ifmg.produto1_2026.services.UsuarioService;
+import jakarta.validation.Valid;
 import org.hibernate.query.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -14,10 +17,11 @@ import java.net.URI;
 @RestController
 @RequestMapping("/usuario")
 public class UsuarioResource {
+
     @Autowired
     private UsuarioService usuarioService;
 
-
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR')")
     @GetMapping
     public ResponseEntity<Page<UsuarioDTO>> usuarios(Pageable pageable){
 
@@ -26,6 +30,7 @@ public class UsuarioResource {
         return ResponseEntity.ok().body(usuarios);
     };
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR')")
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioDTO> usuario(@PathVariable Long id){
         UsuarioDTO dto= usuarioService.findById(id);
@@ -34,7 +39,7 @@ public class UsuarioResource {
 
     @PostMapping
     public ResponseEntity<UsuarioDTO> insert(
-            @RequestBody UsuarioDTO dto){
+            @RequestBody @Valid UsuarioInsertDTO dto){
         //inserindo no BD e pegando o objeto inserido.
         UsuarioDTO retorno
                 = usuarioService.insert(dto);
@@ -51,6 +56,7 @@ public class UsuarioResource {
                 .body(retorno);
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMINISTRADOR')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
 

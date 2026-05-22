@@ -36,6 +36,7 @@ public class PerfilDTO {
         this.nome = nome;
     }
 
+    @Override
     public String toString(){
         return "PerfilDTO{" + "id=" + id + ", nome=" + nome + '}';
     }

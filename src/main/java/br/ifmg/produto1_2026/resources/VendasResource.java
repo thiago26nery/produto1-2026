@@ -14,10 +14,10 @@ import javax.swing.text.html.parser.Entity;
 @RequestMapping("/venda")
 public class VendasResource {
 
-    private AtivacaoClienteService atividacaoClienteService;
+    private AtivacaoClienteService ativacaoCliente;
 
-    public VendasResource(AtivacaoClienteService atividacaoClienteService) {
-        this.atividacaoClienteService = atividacaoClienteService;
+    public VendasResource(AtivacaoClienteService ativacaoCliente) {
+        this.ativacaoCliente = ativacaoCliente;
         System.out.println("Camada de resource executada");
     }
 
@@ -27,7 +27,7 @@ public class VendasResource {
         usuario.setNome("Fernando");
         usuario.setTelefone("+5555555555");
         usuario.setEmail("fernando@gmail.com");
-        atividacaoClienteService.ativar(usuario,"ativado...");
+        ativacaoCliente.ativar(usuario,"ativado...");
 
         return ResponseEntity.ok().body("Venda Realizada");
     }

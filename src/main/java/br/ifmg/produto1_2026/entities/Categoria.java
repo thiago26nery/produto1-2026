@@ -25,7 +25,9 @@ public class Categoria {
     @ManyToMany(mappedBy = "categorias")
     private Set<Produto>  produtos = new HashSet<Produto>();
 
-    public Categoria() {}
+    public Categoria() {
+
+    }
 
     public Categoria(Long id, String nome) {
         this.id = id;

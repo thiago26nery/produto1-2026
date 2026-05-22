@@ -100,6 +100,7 @@ public class UsuarioDTO {
         this.perfis = perfis;
    }
 
+   @Override
    public String toString(){
         return "Usuario{" + "id=" + id + ", nome=" + nome + ", telefone=" + telefone + ", email=" + email + ", senha=" + senha + '}';
    }

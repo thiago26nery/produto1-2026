@@ -63,6 +63,16 @@
         {
           "name": "Delete",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "url": {
@@ -82,8 +92,25 @@
         {
           "name": "Insert",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
-            "header": [],
+            "header": [
+              {
+                "key": "token",
+                "value": "",
+                "type": "text",
+                "disabled": true
+              }
+            ],
             "body": {
               "mode": "raw",
               "raw": "{\r\n    \"nome\": \"Bicicleta\"\r\n}",
@@ -109,6 +136,16 @@
         {
           "name": "Update",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [],
             "body": {
@@ -197,6 +234,16 @@
         {
           "name": "Delete",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "url": {
@@ -216,6 +263,16 @@
         {
           "name": "Insert",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [],
             "body": {
@@ -243,6 +300,16 @@
         {
           "name": "Update",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PUT",
             "header": [],
             "body": {
@@ -276,6 +343,16 @@
         {
           "name": "Get all",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [],
             "url": {
@@ -331,6 +408,16 @@
         {
           "name": "Delete",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "DELETE",
             "header": [],
             "url": {
@@ -377,6 +464,16 @@
         {
           "name": "Send mail",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "POST",
             "header": [],
             "body": {
@@ -436,18 +533,38 @@
       "item": [
         {
           "name": "oauth2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if ((pm.response.code >= 200) &&\r",
+                  "  (pm.response.code < 300)\r",
+                  ") {\r",
+                  " var json = \r",
+                  "     JSON.parse(pm.response.text());\r",
+                  "\r",
+                  "   pm.environment.set('token',\r",
+                  "        json.access_token)\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {}
+              }
+            }
+          ],
           "request": {
             "auth": {
               "type": "basic",
               "basic": [
                 {
                   "key": "password",
-                  "value": "myclientsecret",
+                  "value": "{{client-secret}}",
                   "type": "string"
                 },
                 {
                   "key": "username",
-                  "value": "myclientid",
+                  "value": "{{client-id}}",
                   "type": "string"
                 }
               ]
@@ -459,12 +576,12 @@
               "urlencoded": [
                 {
                   "key": "username",
-                  "value": "bruno.ferreira@ifmg.edu.br",
+                  "value": "{{username}}",
                   "type": "text"
                 },
                 {
                   "key": "password",
-                  "value": "123456",
+                  "value": "{{password}}",
                   "type": "text"
                 },
                 {

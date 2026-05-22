@@ -121,7 +121,7 @@ public class UsuarioService implements UserDetailsService {
         }
     }
 
-    // 18 - avançando com o spring security
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -133,6 +133,14 @@ public class UsuarioService implements UserDetailsService {
         }
 
         Usuario usuario = new Usuario();
+        usuario.setSenha(dados.getFirst().getPassword());
+        usuario.setEmail(dados.getFirst().getUsername());
+
+        for (UserDetailsProjection dado: dados) {
+            usuario.addRole(
+                    new Perfil(dado.getRoleId(),dado.getAuthority())
+            );
+        }
 
         return usuario;
     }
