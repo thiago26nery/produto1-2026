@@ -3,6 +3,8 @@ package br.ifmg.produto1_2026.resources;
 
 import br.ifmg.produto1_2026.dto.ProdutoDTO;
 
+import br.ifmg.produto1_2026.dto.ProdutoListDTO;
+import br.ifmg.produto1_2026.services.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -23,7 +25,7 @@ import java.net.URI;
 public class ProdutoResource {
 
     @Autowired
-    private br.ifmg.produto1_2026.services.ProdutoService produtoService;
+    private ProdutoService produtoService;
 
 
     @GetMapping(produces = "application/json")
@@ -33,6 +35,24 @@ public class ProdutoResource {
             responses = {
                     @ApiResponse(description = "Lista retornada com sucesso", responseCode = "200"),
                     @ApiResponse(description = "Erro interno", responseCode = "500"),
+            }
+    )
+    public ResponseEntity<Page<ProdutoListDTO>>produtos(
+                    @RequestParam(value = "categoriasId", defaultValue = "0") String categoriasId,
+                    @RequestParam(value = "name", defaultValue = "") String name,
+                    Pageable pageable){
+
+        Page<ProdutoListDTO> produtos = produtoService.findAll(categoriasId,name,pageable);
+        return ResponseEntity.ok().body(produtos);
+    }
+
+    @GetMapping(value =  "/v1/", produces = "application/json")
+    @Operation(
+            summary = "Endpoint retornar todos os produtos",
+            description = "A plataforma precisa disponibilizar uma listagem de produtos...",
+            responses = {
+                    @ApiResponse(description = "Lista retornada com sucesso", responseCode = "200"),
+                    @ApiResponse(description = "Erro interno", responseCode = "500")
             }
     )
     public ResponseEntity<Page<ProdutoDTO>> produtos(Pageable pageable){

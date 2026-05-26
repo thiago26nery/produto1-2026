@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import sun.jvm.hotspot.debugger.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.awt.print.Pageable;
 import java.util.List;
@@ -24,6 +25,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
                           p.nome,
                           p.preco,
                           p.img_url
+                          p.img_url as imgUrl
                     FROM tb_produto p
                     INNER JOIN tb_produto_categoria pc
                                         ON pc.id_produto = p.id
@@ -49,6 +51,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
                           p.nome,
                           p.preco,
                           p.img_url
+                          p.img_url as imgUrl
                     FROM tb_produto p
                     INNER JOIN tb_produto_categoria pc
                                         ON pc.id_produto = p.id
