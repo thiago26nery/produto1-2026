@@ -1,0 +1,14 @@
+package br.ifmg.produto1_2026.repositories;
+
+import br.ifmg.produto1_2026.entities.PasswordRecover;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import java.time.Instant;
+import java.util.List;
+
+@Repository
+public interface PasswordRecoverRepository {
+    @Query("SELECT obj FROM PasswordRecover obj WHERE obj.token = :token AND obj.expiration > :now")
+    List<PasswordRecover> searchValidTokens(String token, Instant now);
+}

@@ -6,4 +6,5 @@ import org.springframework.data.repository.Repository;
 
 public interface PerfilRepository extends JpaRepository<Perfil, Long> {
 
+    Perfil findByNome(String nome);
 }

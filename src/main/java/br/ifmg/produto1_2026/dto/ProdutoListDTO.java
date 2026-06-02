@@ -40,7 +40,7 @@ public class ProdutoListDTO extends RepresentationModel<ProdutoListDTO> {
     }
 
     public ProdutoListDTO(ProdutoProjection projection){
-        this.id = projection.getID();
+        this.id = projection.getId();
         this.nome = projection.getNome();
         this.preco = projection.getPreco();
         this.imgUrl = projection.getImgUrl();
